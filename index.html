@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandSentinel - 冒名監控解決方案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 222.2 47.4% 11.2%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96.1%;
+            --secondary-foreground: 222.2 47.4% 11.2%;
+            --muted: 210 40% 96.1%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96.1%;
+            --accent-foreground: 222.2 47.4% 11.2%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 222.2 84% 4.9%;
+            --radius: 0.5rem;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", "PingFang TC", "Helvetica Neue", Arial, sans-serif;
+            color: hsl(var(--foreground));
+            background-color: hsl(var(--background));
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: hsl(var(--background));
+            border-bottom: 1px solid hsl(var(--border));
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+            background-color: hsla(var(--background) / 0.95);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: hsl(var(--primary));
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: hsl(var(--background));
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: hsl(var(--foreground));
+        }
+
+        .hero .subheadline {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: hsl(var(--muted-foreground));
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .trust-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+
+        .trust-bar span {
+            padding: 0.5rem 1rem;
+            background: hsl(var(--secondary));
+            color: hsl(var(--secondary-foreground));
+            border-radius: calc(var(--radius) * 2);
+            font-weight: 500;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+
+        .btn-primary:hover {
+            background: hsl(var(--primary) / 0.9);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: hsl(var(--foreground));
+            border: 1px solid hsl(var(--input));
+        }
+
+        .btn-secondary:hover {
+            background: hsl(var(--accent));
+            color: hsl(var(--accent-foreground));
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: hsl(var(--foreground));
+            font-weight: 700;
+        }
+
+        /* Problem Section */
+        .problem {
+            background: hsl(var(--muted) / 0.3);
+        }
+
+        .problem-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .problem-card {
+            background: hsl(var(--card));
+            padding: 2rem;
+            border-radius: var(--radius);
+            border: 1px solid hsl(var(--border));
+        }
+
+        .problem-card h3 {
+            color: hsl(var(--foreground));
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .problem-card p {
+            color: hsl(var(--muted-foreground));
+        }
+
+        /* Value Proposition */
+        .value-prop {
+            background: hsl(var(--background));
+        }
+
+        .value-prop-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .value-prop-content h2 {
+            font-size: 1.75rem;
+            margin-bottom: 2rem;
+            color: hsl(var(--foreground));
+            font-weight: 700;
+        }
+
+        .value-list {
+            list-style: none;
+            text-align: left;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .value-list li {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: hsl(var(--muted));
+            border-left: 3px solid hsl(var(--primary));
+            border-radius: var(--radius);
+        }
+
+        .value-list li strong {
+            color: hsl(var(--foreground));
+            font-weight: 600;
+        }
+
+        /* How it Works */
+        .how-it-works {
+            background: hsl(var(--muted) / 0.3);
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .timeline-item {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            position: relative;
+        }
+
+        .timeline-number {
+            width: 60px;
+            height: 60px;
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .timeline-item h3 {
+            margin-bottom: 0.5rem;
+            color: hsl(var(--foreground));
+            font-weight: 600;
+        }
+
+        .timeline-item p {
+            color: hsl(var(--muted-foreground));
+        }
+
+        /* Features */
+        .features {
+            background: hsl(var(--background));
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            transition: all 0.2s;
+            background: hsl(var(--card));
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 2px 8px hsla(var(--foreground) / 0.1);
+            border-color: hsl(var(--primary));
+        }
+
+        .feature-card h3 {
+            color: hsl(var(--foreground));
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: hsl(var(--muted-foreground));
+        }
+
+        /* Pricing */
+        .pricing {
+            background: hsl(var(--muted) / 0.3);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: hsl(var(--card));
+            border-radius: var(--radius);
+            padding: 2rem;
+            border: 1px solid hsl(var(--border));
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid hsl(var(--primary));
+            box-shadow: 0 4px 12px hsla(var(--foreground) / 0.1);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: hsl(var(--foreground));
+            margin: 1rem 0;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid hsl(var(--border));
+            color: hsl(var(--muted-foreground));
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        /* FAQ */
+        .faq {
+            background: hsl(var(--background));
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: hsl(var(--card));
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .faq-question:hover {
+            background: hsl(var(--accent));
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            display: none;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: hsl(var(--card));
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid hsl(var(--border));
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .modal-close:hover {
+            color: hsl(var(--foreground));
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+            font-size: 0.875rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid hsl(var(--input));
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: hsl(var(--ring));
+            box-shadow: 0 0 0 2px hsla(var(--ring) / 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-note {
+            font-size: 0.875rem;
+            color: hsl(var(--muted-foreground));
+            margin-top: 1rem;
+            padding: 1rem;
+            background: hsl(var(--muted));
+            border-radius: var(--radius);
+        }
+
+        /* Thank You Page */
+        .thank-you {
+            display: none;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .thank-you.active {
+            display: block;
+        }
+
+        .thank-you h2 {
+            font-size: 2rem;
+            color: hsl(var(--foreground));
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .thank-you p {
+            font-size: 1.125rem;
+            color: hsl(var(--muted-foreground));
+            margin-bottom: 2rem;
+        }
+
+        .thank-you-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        footer {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero .subheadline {
+                font-size: 1rem;
+            }
+
+            .timeline {
+                flex-direction: column;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">BrandSentinel</div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>當有人冒用你的品牌詐騙客戶，<strong>你會在第一時間知道</strong>。</h1>
+            <p class="subheadline">
+                BrandSentinel 針對「假冒網站 / 假客服帳號 / 假投資群組 / 釣魚訊息導流」等偽冒情境，提供<strong>即時告警 + 可執行處置建議</strong>，讓資安/風控/客服不再靠民眾通報才被動處理。
+            </p>
+            <div class="trust-bar">
+                <span>適用金融/電商/大型服務品牌</span>
+                <span>部署 30 分鐘內完成</span>
+                <span>支援多渠道監控</span>
+            </div>
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="trackEvent('cta_click_primary'); openModal()">
+                    啟用冒名監控（搶先體驗）
+                </button>
+                <a href="#features" class="btn btn-secondary" onclick="trackEvent('cta_click_secondary')">
+                    看功能
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem" id="problem">
+        <div class="container">
+            <h2 class="section-title">核心痛點</h2>
+            <div class="problem-cards">
+                <div class="problem-card">
+                    <h3>發現太晚</h3>
+                    <p>多數偽冒事件靠客戶或媒體爆出才知道，已造成受害與公關危機。</p>
+                </div>
+                <div class="problem-card">
+                    <h3>處置分散</h3>
+                    <p>資安、客服、法務各自處理，缺乏可複用 SOP 與證據整理。</p>
+                </div>
+                <div class="problem-card">
+                    <h3>難以衡量 ROI</h3>
+                    <p>事件處理耗時、客訴上升、品牌信任受損但難量化。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition -->
+    <section class="value-prop">
+        <div class="container">
+            <div class="value-prop-content">
+                <h2>把偽冒風險從「被動接招」變成「主動監控 + 可交付處置」</h2>
+                <ul class="value-list">
+                    <li>
+                        <strong>即時偽冒告警</strong>：偵測到疑似冒名資產就通知（Email/Slack/Teams）。
+                    </li>
+                    <li>
+                        <strong>事件處置建議</strong>：提供可直接交辦的 SOP（下架/檢舉/封鎖/公告範本）。
+                    </li>
+                    <li>
+                        <strong>管理層視角報表</strong>：每月偽冒趨勢、渠道分布、處置進度與節省工時估算。
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">運作方式</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-number">1</div>
+                    <h3>輸入你的品牌資產</h3>
+                    <p>品牌名、官方網域、官方客服管道、關鍵字</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">2</div>
+                    <h3>多渠道監控</h3>
+                    <p>假網域/釣魚頁、社群帳號/粉專、通訊軟體群組與詐騙導流訊息</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">3</div>
+                    <h3>告警 + 建議 + 追蹤</h3>
+                    <p>發現後即時推送、給處置步驟、追蹤狀態</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">主要功能</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Brand Watchlist</h3>
+                    <p>品牌/產品/高風險關鍵字監控</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Risk Scoring</h3>
+                    <p>疑似偽冒可信度分級（高/中/低）</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Evidence Pack</h3>
+                    <p>自動整理證據截圖/URL/來源（方便法務或平台檢舉）</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Response Playbooks</h3>
+                    <p>一鍵生成處置建議（依渠道不同）</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Case Management</h3>
+                    <p>事件指派、狀態追蹤、處置 SLA</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Alerts & Integrations</h3>
+                    <p>Email/Slack/Teams/Webhook（Coming soon）</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">方案與價格</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">NT$ 19,000<span style="font-size: 1rem;">/月</span></div>
+                    <ul class="pricing-features">
+                        <li>1 品牌</li>
+                        <li>1–2 渠道</li>
+                        <li>每日摘要告警</li>
+                        <li>基本 SOP</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="trackEvent('cta_click_pricing_tier', {tier: 'starter'}); openModal('starter')">
+                        申請搶先體驗
+                    </button>
+                </div>
+                <div class="pricing-card featured">
+                    <h3>Pro</h3>
+                    <div class="price">NT$ 49,000<span style="font-size: 1rem;">/月</span></div>
+                    <ul class="pricing-features">
+                        <li>3 品牌</li>
+                        <li>3 渠道</li>
+                        <li>即時告警</li>
+                        <li>Evidence Pack</li>
+                        <li>簡易案件追蹤</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="trackEvent('cta_click_pricing_tier', {tier: 'pro'}); openModal('pro')">
+                        申請搶先體驗
+                    </button>
+                </div>
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">聯繫報價</div>
+                    <ul class="pricing-features">
+                        <li>無上限品牌</li>
+                        <li>客製渠道</li>
+                        <li>SLA</li>
+                        <li>客製整合</li>
+                        <li>專屬支援</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="trackEvent('cta_click_pricing_tier', {tier: 'enterprise'}); openModal('enterprise')">
+                        聯繫產品顧問
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <div class="container">
+            <h2 class="section-title">常見問題</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        需要安裝嗎？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        不需要，可先以外部監控為主。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        告警會不會很多誤報？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        提供分級與白名單機制，可依風險等級調整告警敏感度。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        目前支援哪些渠道？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        MVP 只支援 1–2 個主要渠道，其他渠道 Coming soon。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        是否提供下架代辦？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        可選購下架代辦服務，或由顧問協助處理。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Form -->
+    <div class="modal" id="formModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="formContent">
+                <h2 style="margin-bottom: 1.5rem;">申請搶先體驗：啟用冒名監控</h2>
+                <form id="earlyAccessForm" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="email">工作信箱（需企業網域）*</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">公司名稱 / 官網 *</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="industry">產業 *</label>
+                        <select id="industry" name="industry" required>
+                            <option value="">請選擇</option>
+                            <option value="finance">金融</option>
+                            <option value="ecommerce">電商</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">你的角色 *</label>
+                        <select id="role" name="role" required>
+                            <option value="">請選擇</option>
+                            <option value="security">資安</option>
+                            <option value="risk">風控</option>
+                            <option value="compliance">法遵</option>
+                            <option value="customer-service">客服</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="concern">目前最擔心的偽冒渠道 *</label>
+                        <select id="concern" name="concern" required>
+                            <option value="">請選擇</option>
+                            <option value="fake-domain">假網域</option>
+                            <option value="social-account">社群帳號</option>
+                            <option value="messaging-group">通訊軟體群組</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="brandAssets">你想監控的品牌資產（品牌名、官方網域、關鍵字）*</label>
+                        <textarea id="brandAssets" name="brandAssets" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="plan">你偏好的方案 *</label>
+                        <select id="plan" name="plan" required>
+                            <option value="">請選擇</option>
+                            <option value="starter">Starter</option>
+                            <option value="pro">Pro</option>
+                            <option value="enterprise">Enterprise</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">預算區間 *</label>
+                        <select id="budget" name="budget" required>
+                            <option value="">請選擇</option>
+                            <option value="<20k">< 20k</option>
+                            <option value="20-50k">20–50k</option>
+                            <option value="50-100k">50–100k</option>
+                            <option value="100k+">100k+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeline">你希望多久內上線 *</label>
+                        <select id="timeline" name="timeline" required>
+                            <option value="">請選擇</option>
+                            <option value="2weeks">2 週內</option>
+                            <option value="1month">1 個月</option>
+                            <option value="1quarter">1 季度</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="incidents">過去 3 個月是否發生過疑似偽冒事件 *</label>
+                        <select id="incidents" name="incidents" required>
+                            <option value="">請選擇</option>
+                            <option value="0">0</option>
+                            <option value="1-3">1–3</option>
+                            <option value="4-10">4–10</option>
+                            <option value="10+">10+</option>
+                        </select>
+                    </div>
+                    <div class="form-note">
+                        <strong>送出後我們會寄出一份「品牌偽冒風險初步報告」</strong>，幫助您了解目前的風險狀況。
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                        送出並啟用監控（搶先體驗）
+                    </button>
+                </form>
+            </div>
+            <div class="thank-you" id="thankYou">
+                <h2>已收到申請</h2>
+                <p>我們將在 2 個工作天內寄出搶先體驗資訊與初步風險盤點。</p>
+                <div class="thank-you-actions">
+                    <a href="#" class="btn btn-primary" onclick="trackEvent('calendly_click')">
+                        預約 15 分鐘需求對焦
+                    </a>
+                    <a href="#" class="btn btn-secondary" onclick="trackEvent('download_checklist')">
+                        下載：偽冒事件處置清單（PDF）
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 BrandSentinel. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Track page view
+        trackEvent('page_view');
+
+        // Modal functions
+        function openModal(selectedPlan = '') {
+            trackEvent('form_start');
+            const modal = document.getElementById('formModal');
+            const form = document.getElementById('earlyAccessForm');
+            const thankYou = document.getElementById('thankYou');
+            const formContent = document.getElementById('formContent');
+            
+            modal.classList.add('active');
+            formContent.style.display = 'block';
+            thankYou.classList.remove('active');
+            form.reset();
+            
+            if (selectedPlan) {
+                document.getElementById('plan').value = selectedPlan;
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('formModal');
+            modal.classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('formModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Track form submission
+            trackEvent('form_submit');
+            
+            // Track selected values
+            const budget = document.getElementById('budget').value;
+            const role = document.getElementById('role').value;
+            const timeline = document.getElementById('timeline').value;
+            
+            if (budget) trackEvent('budget_selected', {value: budget});
+            if (role) trackEvent('role_selected', {value: role});
+            if (timeline) trackEvent('time_to_launch_selected', {value: timeline});
+            
+            // Hide form, show thank you
+            document.getElementById('formContent').style.display = 'none';
+            document.getElementById('thankYou').classList.add('active');
+            
+            // In a real implementation, you would send the form data to a backend here
+            console.log('Form submitted:', new FormData(event.target));
+        }
+
+        // FAQ toggle
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Open clicked item if it wasn't active
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // Event tracking function
+        function trackEvent(eventName, data = {}) {
+            // In a real implementation, this would send to your analytics service
+            console.log('Event tracked:', eventName, data);
+            
+            // Example: You could use Google Analytics, Mixpanel, etc.
+            // gtag('event', eventName, data);
+            // mixpanel.track(eventName, data);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
