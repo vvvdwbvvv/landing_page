@@ -158,12 +158,13 @@ nav {
 }
 
 .btn-primary {
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+    background: #000000 !important;
+    color: #ffffff !important;
 }
 
 .btn-primary:hover {
-    background: hsl(var(--primary) / 0.9);
+    background: #333333 !important;
+    color: #ffffff !important;
 }
 
 .btn-secondary {
